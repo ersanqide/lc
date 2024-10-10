@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>刘主任！</title>
+    <title>刘主任无敌</title>
     <style>
         * {
             margin: 0;
@@ -18,25 +18,112 @@
             align-items: center;
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
-            background-image: url('https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR7GgexMCoYEFthf0Y2I6DFHhmwkavMdVht8WdNDZEp02Cq95Ss'); /* 将此处替换为荷花背景图片的URL */
-            background-size: cover;
-            background-position: center;
         }
 
+        /* 登录界面UI样式 */
+        .login-container {
+            display: none; /* 默认隐藏，显示登录界面 */
+            width: 350px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .login-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .login-button:hover {
+            background-color: #45a049;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            display: none;
+        }
+
+        /* 弹窗样式 */
+        .modal {
+            display: none; /* 初始隐藏 */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 300px;
+            text-align: center;
+        }
+
+        .close-modal {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .close-modal:hover {
+            background-color: #45a049;
+        }
+
+        /* 照片展示界面样式 */
         .container {
             position: relative;
             text-align: center;
             width: 100%;
             max-width: 600px;
+            display: none; /* 初始隐藏，登录后显示 */
         }
 
-        /* 照片展示，调整照片的比例 */
+        body.logged-in {
+            background-image: url('https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR7GgexMCoYEFthf0Y2I6DFHhmwkavMdVht8WdNDZEp02Cq95Ss'); /* 登录成功后加载荷花背景 */
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* 照片展示 */
         .photo-gallery img {
             width: 100%;
-            height: auto;  /* 保持照片的宽高比 */
+            height: auto;
             max-width: 500px;
-            border-radius: 10px;  /* 给照片加上圆角 */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             opacity: 0;
             animation: photo-fade-in-out 1s ease-in-out infinite;
         }
@@ -66,18 +153,69 @@
 </head>
 <body>
 
-    <div class="container">
-        <!-- 渐显渐隐的照片 -->
+    <!-- 登录界面 -->
+    <div class="login-container" id="login-container">
+        <div class="login-title">请登录</div>
+        <input type="text" id="username" placeholder="用户名">
+        <input type="password" id="password" placeholder="密码">
+        <div class="error-message" id="error-message">用户名或密码错误</div>
+        <button class="login-button" onclick="login()">登录</button>
+    </div>
+
+    <!-- 弹窗提示 -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <p>账号和密码，当然都是你</p>
+            <button class="close-modal" onclick="closeModal()">进入页面</button>
+        </div>
+    </div>
+
+    <!-- 照片展示界面 -->
+    <div class="container" id="content-container">
         <div class="photo-gallery">
             <img id="photo" src="https://img.meituan.net/csc/93010085c5a2dbbed110d078dc1f19791456261.png" alt="照片展示"> <!-- 可以替换为你第一张照片的URL -->
         </div>
-
-        <!-- 跳动的彩色字 -->
         <div id="animated-text">刘主任最美，刘主任最靓！</div>
     </div>
 
     <script>
-        /* 替换这些链接为你的实际照片URL */
+        // 简单的登录逻辑
+        const correctUsername = '刘灿';  // 正确的用户名
+        const correctPassword = '050706';  // 正确的密码
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+            const loginModal = document.getElementById('login-modal');
+
+            if (username === correctUsername && password === correctPassword) {
+                errorMessage.style.display = 'none'; // 隐藏错误信息
+                loginModal.style.display = 'block';  // 显示登录成功弹窗
+            } else {
+                errorMessage.style.display = 'block';  // 显示错误信息
+            }
+        }
+
+        function closeModal() {
+            const loginModal = document.getElementById('login-modal');
+            const loginContainer = document.getElementById('login-container');
+            const contentContainer = document.getElementById('content-container');
+
+            document.body.classList.add('logged-in');  // 切换到荷花背景
+            loginModal.style.display = 'none';  // 隐藏弹窗
+            loginContainer.style.display = 'none';  // 隐藏登录界面
+            contentContainer.style.display = 'block';  // 显示照片展示内容
+        }
+
+        // 按回车键登录
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                login();
+            }
+        });
+
+        // 照片切换
         const photos = [
             'https://img.meituan.net/csc/1d921f8a1fef2533f8b7fa458f6825861647029.png',
             'https://img.meituan.net/csc/7716bd6b6a4f893b6b1347d3b32c2d311404817.png',
@@ -94,6 +232,11 @@
         }
 
         setInterval(changePhoto, 2000); // 每2秒切换照片
+
+        // 初始加载登录界面
+        window.onload = function() {
+            document.getElementById('login-container').style.display = 'block';
+        }
     </script>
 
 </body>
