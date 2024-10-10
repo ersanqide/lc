@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>刘主任！</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            background-image: url('https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR7GgexMCoYEFthf0Y2I6DFHhmwkavMdVht8WdNDZEp02Cq95Ss'); /* 将此处替换为荷花背景图片的URL */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container {
+            position: relative;
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        /* 照片展示，调整照片的比例 */
+        .photo-gallery img {
+            width: 100%;
+            height: auto;  /* 保持照片的宽高比 */
+            max-width: 500px;
+            border-radius: 10px;  /* 给照片加上圆角 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
+            opacity: 0;
+            animation: photo-fade-in-out 1s ease-in-out infinite;
+        }
+
+        @keyframes photo-fade-in-out {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* 跳动的彩色字 */
+        #animated-text {
+            position: absolute;
+            top: -50px;
+            width: 100%;
+            text-align: center;
+            font-size: 24px;
+            color: #ff0000;
+            animation: text-bounce 1s infinite;
+        }
+
+        @keyframes text-bounce {
+            0%, 100% { transform: translateY(0); color: #ff0000; }
+            50% { transform: translateY(-10px); color: #00ff00; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 渐显渐隐的照片 -->
+        <div class="photo-gallery">
+            <img id="photo" src="https://img.meituan.net/csc/93010085c5a2dbbed110d078dc1f19791456261.png" alt="照片展示"> <!-- 可以替换为你第一张照片的URL -->
+        </div>
+
+        <!-- 跳动的彩色字 -->
+        <div id="animated-text">刘主任最美，刘主任最靓！</div>
+    </div>
+
+    <script>
+        /* 替换这些链接为你的实际照片URL */
+        const photos = [
+            'https://img.meituan.net/csc/1d921f8a1fef2533f8b7fa458f6825861647029.png',
+            'https://img.meituan.net/csc/7716bd6b6a4f893b6b1347d3b32c2d311404817.png',
+            'https://img.meituan.net/csc/296def9b039829c286414a6b4eb6bff61121759.png',
+            'https://img.meituan.net/csc/4ae9ecdac6da592c91863b4694e72c411533490.png',
+        ];
+
+        let photoIndex = 0;
+
+        function changePhoto() {
+            const photoElement = document.getElementById('photo');
+            photoElement.src = photos[photoIndex];
+            photoIndex = (photoIndex + 1) % photos.length;
+        }
+
+        setInterval(changePhoto, 2000); // 每2秒切换照片
+    </script>
+
+</body>
+</html>
